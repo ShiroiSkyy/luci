@@ -1878,7 +1878,7 @@ msgid "CPU Usage"
 msgstr "CPU负载"
 
 msgid "User Info"
-msgstr "连接数"
+msgstr "连接数量"
 
 msgid "Firmware Make"
 msgstr "固件制作"
