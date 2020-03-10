@@ -1874,6 +1874,12 @@ msgstr "负载"
 msgid "Load Average"
 msgstr "平均负载"
 
+msgid "CPU Use"
+msgstr "CPU 负载"
+
+msgid "Firmware Make"
+msgstr "固件制作"
+
 msgid "Loading"
 msgstr "加载中"
 

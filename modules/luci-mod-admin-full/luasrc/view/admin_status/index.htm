@@ -44,7 +44,7 @@
 		local conn_max = tonumber(luci.sys.exec(
 			"sysctl -n -e net.nf_conntrack_max net.ipv4.netfilter.ip_conntrack_max"
 		):match("%d+")) or 4096
-		
+
 		local cpu_use = luci.sys.exec("echo -e `expr 100 - $(top -n 1 | grep 'CPU:' | awk -F '%' '{ print $4 }' | awk -F ' ' '{ print $2 }')`%")
 
 		local rv = {
@@ -116,7 +116,15 @@
 -%>
 
 <%+header%>
-
+<style>
+#index_h3{
+	float: left;
+    width: 34%;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 36px;
+}
+</style>
 <script type="text/javascript">//<![CDATA[
 	function progressbar(v, m)
 	{
@@ -391,8 +399,8 @@
 </div>
 
 <div class="cbi-section">
-	<h3><%:Memory%></h3>
-
+	<div id="index_h3"><%:Memory%></div>
+	<a href="<%=url("admin/status/release_ram")%>"><div class="cbi-button cbi-button-apply" style="float: left;user-select:none;">释放内存</div></a>
 	<div class="table" width="100%">
 		<div class="tr"><div class="td left" width="33%"><%:Total Available%></div><div class="td left" id="memtotal">-</div></div>
 		<div class="tr"><div class="td left" width="33%"><%:Free%></div><div class="td left" id="memfree">-</div></div>
