@@ -49,11 +49,13 @@
 
 		local user_info = luci.sys.exec("cat /proc/net/arp | grep '0x2' | wc -l") or 0
 
+		local local_time = luci.sys.exec("date +'%a %m-%d %H:%M:%S'")
+
 		local rv = {
 			cpuusage   = cpu_usage,
 			userinfo   = user_info,
 			uptime     = sysinfo.uptime or 0,
-			localtime  = os.date(),
+			localtime  = local_time,
 			loadavg    = sysinfo.load or { 0, 0, 0 },
 			memory     = meminfo,
 			swap       = swapinfo,
@@ -127,8 +129,59 @@
     font-weight: 700;
     line-height: 36px;
 }
+.boxFrame {
+	position: relative;
+	width: 100%;
+}
+.dashBoard {
+	border-radius: 10px;
+	background-color: hsla(240, 15%, 95%, 1);
+	margin-bottom: 30px;
+	overflow: hidden;
+	user-select: none;
+}
+.boxTitle {
+	color: #424874;
+	cursor: default;
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 35px;
+	padding-left: 10px;
+	border-radius: 8px 8px 0 0;
+	background-color: hsla(229, 50%, 85%, 1);
+}
+.littleBox {
+    width: 20%;
+    height: 120px;
+    text-align: center;
+	display: inline-grid;
+	cursor: pointer;
+    float: left;
+    color: hsla(0,0%,0%,1.00);
+	transition: all 0.3s;
+	box-shadow: inset 0 0 1px hsla(0, 0%, 50%, 0.5);
+}
+.littleBox:hover {
+    color: hsla(0,0%,0%,1.00);
+	box-shadow: inset 0 0 20px 5px hsla(0, 0%, 70%, 1);
+}
+.box_center {
+	display: inline-grid;
+    align-items: center;
+}
+.boxName {
+	display: none;
+}
 </style>
 <script type="text/javascript">//<![CDATA[
+	function boxInfoShow(littleBox){
+		littleBox.children[0].style.display="inline-grid";
+		littleBox.children[1].style.display="none";
+	}
+	function boxInfohidden(littleBox){
+		littleBox.children[0].style.display="none";
+		littleBox.children[1].style.display="inline-grid";
+	}
 	function progressbar(v, m)
 	{
 		var vn = parseInt(v) || 0;
@@ -384,24 +437,23 @@
 
 <h2 name="content"><%:Status%></h2>
 
-<div class="cbi-section">
-	<h3><%:System%></h3>
+<div class="dashBoard">
+	<div class="boxTitle"><%:System%></div>
 
-	<div class="table" width="100%">
-		<div class="tr"><div class="td left" width="33%"><%:Hostname%></div><div class="td left"><%=luci.sys.hostname() or "?"%></div></div>
-		<div class="tr"><div class="td left" width="33%"><%:Model%></div><div class="td left"><%=pcdata(boardinfo.model or "?")%></div></div>
-		<div class="tr"><div class="td left" width="33%"><%:Architecture%></div><div class="td left"><%=pcdata(boardinfo.system or "?")%></div></div>
-		<div class="tr"><div class="td left" width="33%"><%:Firmware Version%></div><div class="td left">
+	<div class="boxFrame">
+		<div class="littleBox" onMouseEnter="boxInfoShow(this)" onMouseLeave="boxInfohidden(this)"><div class="boxName box_center"><%:Hostname%></div><div class="boxInfo box_center"><%=luci.sys.hostname() or "?"%></div></div>
+		<div class="littleBox" onMouseEnter="boxInfoShow(this)" onMouseLeave="boxInfohidden(this)"><div class="boxName box_center"><%:Model%></div><div class="boxInfo box_center"><%=pcdata(boardinfo.model or "?")%></div></div>
+		<div class="littleBox" onMouseEnter="boxInfoShow(this)" onMouseLeave="boxInfohidden(this)"><div class="boxName box_center"><%:Architecture%></div><div class="boxInfo box_center"><%=pcdata(boardinfo.system or "?")%></div></div>
+		<div class="littleBox" onMouseEnter="boxInfoShow(this)" onMouseLeave="boxInfohidden(this)"><div class="boxName box_center"><%:Firmware Version%></div><div class="boxInfo box_center">
 			<%=pcdata(ver.distname)%> <%=pcdata(ver.distversion)%> /
 			<%=pcdata(ver.luciname)%> (<%=pcdata(ver.luciversion)%>)
 		</div></div>
-		<div class="tr"><div class="td left" width="33%"><%:Kernel Version%></div><div class="td left"><%=unameinfo.release or "?"%></div></div>
-		<div class="tr"><div class="td left" width="33%"><%:Firmware Make%></div><div class="td left">ShiroiSky</div></div>
-		<div class="tr"><div class="td left" width="33%"><%:Local Time%></div><div class="td left" id="localtime">-</div></div>
-		<div class="tr"><div class="td left" width="33%"><%:Uptime%></div><div class="td left" id="uptime">-</div></div>
-		<div class="tr"><div class="td left" width="33%"><%:Load Average%></div><div class="td left" id="loadavg">-</div></div>
-		<div class="tr"><div class="td left" width="33%"><%:CPU Usage%></div><div class="td left" id="cpuusage">-</div></div>
-		<div class="tr"><div class="td left" width="33%"><%:User Info%></div><div class="td left" id="userinfo">-</div></div>
+		<div class="littleBox" onMouseEnter="boxInfoShow(this)" onMouseLeave="boxInfohidden(this)"><div class="boxName box_center"><%:Kernel Version%></div><div class="boxInfo box_center"><%=unameinfo.release or "?"%></div></div>
+		<div class="littleBox" onMouseEnter="boxInfoShow(this)" onMouseLeave="boxInfohidden(this)"><div class="boxName box_center"><%:Local Time%></div><div class="boxInfo box_center" id="localtime">-</div></div>
+		<div class="littleBox" onMouseEnter="boxInfoShow(this)" onMouseLeave="boxInfohidden(this)"><div class="boxName box_center"><%:Uptime%></div><div class="boxInfo box_center" id="uptime">-</div></div>
+		<div class="littleBox" onMouseEnter="boxInfoShow(this)" onMouseLeave="boxInfohidden(this)"><div class="boxName box_center"><%:Load Average%></div><div class="boxInfo box_center" id="loadavg">-</div></div>
+		<div class="littleBox" onMouseEnter="boxInfoShow(this)" onMouseLeave="boxInfohidden(this)"><div class="boxName box_center"><%:CPU Usage%></div><div class="boxInfo box_center" id="cpuusage">-</div></div>
+		<div class="littleBox" onMouseEnter="boxInfoShow(this)" onMouseLeave="boxInfohidden(this)"><div class="boxName box_center"><%:User Info%></div><div class="boxInfo box_center" id="userinfo">-</div></div>
 	</div>
 </div>
 
