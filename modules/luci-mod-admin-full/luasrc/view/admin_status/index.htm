@@ -49,7 +49,7 @@
 
 		local user_info = luci.sys.exec("cat /proc/net/arp | grep '0x2' | wc -l") or 0
 
-		local local_time = luci.sys.exec("date +'%a %m-%d %H:%M:%S'")
+		local local_time = luci.sys.exec("date +'%a %m-%d %H:%M:%S'") or "-"
 
 		local rv = {
 			cpuusage   = cpu_usage,
@@ -174,14 +174,6 @@
 }
 </style>
 <script type="text/javascript">//<![CDATA[
-	function boxInfoShow(littleBox){
-		littleBox.children[0].style.display="inline-grid";
-		littleBox.children[1].style.display="none";
-	}
-	function boxInfohidden(littleBox){
-		littleBox.children[0].style.display="none";
-		littleBox.children[1].style.display="inline-grid";
-	}
 	function progressbar(v, m)
 	{
 		var vn = parseInt(v) || 0;
@@ -435,11 +427,8 @@
 	);
 //]]></script>
 
-<h2 name="content"><%:Status%></h2>
-
 <div class="dashBoard">
 	<div class="boxTitle"><%:System%></div>
-
 	<div class="boxFrame">
 		<div class="littleBox" onMouseEnter="boxInfoShow(this)" onMouseLeave="boxInfohidden(this)"><div class="boxName box_center"><%:Hostname%></div><div class="boxInfo box_center"><%=luci.sys.hostname() or "?"%></div></div>
 		<div class="littleBox" onMouseEnter="boxInfoShow(this)" onMouseLeave="boxInfohidden(this)"><div class="boxName box_center"><%:Model%></div><div class="boxInfo box_center"><%=pcdata(boardinfo.model or "?")%></div></div>
@@ -459,7 +448,7 @@
 
 <div class="cbi-section">
 	<div id="index_h3"><%:Memory%></div>
-	<a href="<%=url("admin/status/release_ram")%>"><div class="cbi-button cbi-button-apply" style="float: left;user-select:none;">释放内存</div></a>
+		<a href="<%=url("admin/status/release_ram")%>"><div class="cbi-button cbi-button-apply" style="float: left;user-select:none;">释放内存</div></a>
 	<div class="table" width="100%">
 		<div class="tr"><div class="td left" width="33%"><%:Total Available%></div><div class="td left" id="memtotal">-</div></div>
 		<div class="tr"><div class="td left" width="33%"><%:Free%></div><div class="td left" id="memfree">-</div></div>
